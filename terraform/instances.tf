@@ -14,7 +14,7 @@ resource "google_compute_instance" "ansible_controller" {
   tags = ["ansible-controller"]
 }
 
-resource "google_compute_instance" "master" {
+resource "google_compute_instance" "openshift_master" {
   name = "openshift-master"
 
   boot_disk {
@@ -31,7 +31,7 @@ resource "google_compute_instance" "master" {
   tags = ["openshift-master"]
 }
 
-resource "google_compute_instance" "nodes" {
+resource "google_compute_instance" "openshift_nodes" {
   count = "${var.openshift_nodes_count}"
   name  = "openshift-node-${count.index + 1}"
 
