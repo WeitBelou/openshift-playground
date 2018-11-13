@@ -16,9 +16,13 @@ variable "openshift_nodes_count" {
 }
 
 variable "openshift_nodes_disk_size" {
-  size = 40
+  default = 40
 }
 
 variable "openshift_master_disk_size" {
-  size = 60
+  default = 60
+}
+
+variable "ssh_ip_ranges" {
+  default = "0.0.0.0/0"
 }

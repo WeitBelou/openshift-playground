@@ -21,9 +21,7 @@ resource "google_compute_instance" "master" {
     network = "${google_compute_network.openshift.name}"
   }
 
-  tags = [
-    "openshift-master",
-  ]
+  tags = ["openshift-master"]
 }
 
 resource "google_compute_instance" "nodes" {
@@ -41,9 +39,7 @@ resource "google_compute_instance" "nodes" {
     network = "${google_compute_network.openshift.name}"
   }
 
-  tags = [
-    "openshift-node",
-  ]
+  tags = ["openshift-node"]
 }
 
 resource "google_compute_instance" "ansible_controller" {
@@ -59,9 +55,7 @@ resource "google_compute_instance" "ansible_controller" {
     network = "${google_compute_network.openshift.name}"
   }
 
-  tags = [
-    "ansible-controller",
-  ]
+  tags = ["ansible-controller"]
 }
 
 resource "google_compute_firewall" "openshift_node_to_node" {
@@ -146,6 +140,37 @@ resource "google_compute_firewall" "openshift_external_to_master" {
   }
 
   target_tags = ["openshift-master"]
+
+  source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_firewall" "ansible_controller_access" {
+  name    = "ansible-controller-access"
+  network = "${google_compute_network.openshift.name}"
+
+  # External SSH access to controller
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  target_tags = ["ansible-controller"]
+
+  source_ranges = ["${var.ssh_ip_ranges}"]
+}
+
+resource "google_compute_firewall" "ansible_controller_to_openshift" {
+  name    = "ansible-controller-to-openshift"
+  network = "${google_compute_network.openshift.name}"
+
+  # SSH access
+  allow = {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_tags = ["ansible-controller"]
+  target_tags = ["openshift-master", "openshift-node"]
 
   source_ranges = ["0.0.0.0/0"]
 }
