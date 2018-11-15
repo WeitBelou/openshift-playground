@@ -2,8 +2,41 @@ resource "google_compute_network" "openshift" {
   name = "openshift"
 }
 
+resource "google_compute_firewall" "block_all_outgoing_traffic" {
+  name    = "block-all-outgoing-traffic"
+  network = "${google_compute_network.openshift.name}"
+
+  priority = 1200
+
+  direction = "EGRESS"
+
+  deny {
+    protocol = "tcp"
+  }
+
+  deny {
+    protocol = "udp"
+  }
+
+  deny {
+    protocol = "icmp"
+  }
+
+  deny {
+    protocol = "esp"
+  }
+
+  deny {
+    protocol = "ah"
+  }
+
+  deny {
+    protocol = "sctp"
+  }
+}
+
 resource "google_compute_firewall" "openshift_node_to_node" {
-  name    = "openshift_node_to_node"
+  name    = "openshift-node-to-node"
   network = "${google_compute_network.openshift.name}"
 
   # Required for SDN communication between pods on separate hosts.
@@ -15,7 +48,7 @@ resource "google_compute_firewall" "openshift_node_to_node" {
   source_tags = ["openshift-node"]
   target_tags = ["openshift-node"]
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = []
 }
 
 resource "google_compute_firewall" "openshift_node_to_master" {
@@ -23,26 +56,33 @@ resource "google_compute_firewall" "openshift_node_to_master" {
   network = "${google_compute_network.openshift.name}"
 
   # Required for SDN communication between pods on separate hosts.
-  allow = {
+  allow {
     protocol = "udp"
     ports    = ["4789"]
   }
 
   # Required for node hosts to communicate to the master API, for the node hosts to post back status, to receive tasks, and so on.
-  allow = {
+  allow {
     protocol = "tcp"
     ports    = ["443"]
   }
 
   # Required for DNS resolution of cluster services (SkyDNS).
   allow {
-    ports = ["8053"]
+    protocol = "tcp"
+    ports    = ["8053"]
+  }
+
+  # Required for DNS resolution of cluster services (SkyDNS).
+  allow {
+    protocol = "udp"
+    ports    = ["8053"]
   }
 
   source_tags = ["openshift-node"]
   target_tags = ["openshift-master"]
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = []
 }
 
 resource "google_compute_firewall" "openshift_master_to_node" {
@@ -50,13 +90,13 @@ resource "google_compute_firewall" "openshift_master_to_node" {
   network = "${google_compute_network.openshift.name}"
 
   # Required for SDN communication between pods on separate hosts.
-  allow = {
+  allow {
     protocol = "udp"
     ports    = ["4789"]
   }
 
   # The master proxies to node hosts via the Kubelet for oc commands.
-  allow = {
+  allow {
     protocol = "tcp"
     ports    = ["10250"]
   }
@@ -64,7 +104,7 @@ resource "google_compute_firewall" "openshift_master_to_node" {
   source_tags = ["openshift-master"]
   target_tags = ["openshift-node"]
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = []
 }
 
 resource "google_compute_firewall" "openshift_external_to_master" {
@@ -72,7 +112,7 @@ resource "google_compute_firewall" "openshift_external_to_master" {
   network = "${google_compute_network.openshift.name}"
 
   # Required for node hosts to communicate to the master API, for node hosts to post back status, to receive tasks, and so on.
-  allow = {
+  allow {
     protocol = "tcp"
     ports    = ["443"]
   }
@@ -84,8 +124,6 @@ resource "google_compute_firewall" "openshift_external_to_master" {
   }
 
   target_tags = ["openshift-master"]
-
-  source_ranges = ["0.0.0.0/0"]
 }
 
 resource "google_compute_firewall" "ansible_controller_access" {
@@ -108,7 +146,7 @@ resource "google_compute_firewall" "ansible_controller_to_openshift" {
   network = "${google_compute_network.openshift.name}"
 
   # SSH access
-  allow = {
+  allow {
     protocol = "tcp"
     ports    = ["22"]
   }
@@ -116,5 +154,5 @@ resource "google_compute_firewall" "ansible_controller_to_openshift" {
   source_tags = ["ansible-controller"]
   target_tags = ["openshift-master", "openshift-node"]
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = []
 }

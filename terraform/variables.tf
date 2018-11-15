@@ -8,7 +8,11 @@ variable "openshift_master_machine_type" {
 }
 
 variable "openshift_node_machine_type" {
-  default = "custom-1-10240"
+  default = "custom-2-10240"
+}
+
+variable "ansible_controller_machine_type" {
+  default = "g1-small"
 }
 
 variable "openshift_nodes_count" {
