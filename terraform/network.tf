@@ -11,27 +11,7 @@ resource "google_compute_firewall" "block_all_outgoing_traffic" {
   direction = "EGRESS"
 
   deny {
-    protocol = "tcp"
-  }
-
-  deny {
-    protocol = "udp"
-  }
-
-  deny {
-    protocol = "icmp"
-  }
-
-  deny {
-    protocol = "esp"
-  }
-
-  deny {
-    protocol = "ah"
-  }
-
-  deny {
-    protocol = "sctp"
+    protocol = "all"
   }
 }
 
