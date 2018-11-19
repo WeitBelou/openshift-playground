@@ -2,8 +2,8 @@ resource "google_compute_network" "openshift" {
   name = "openshift"
 }
 
-resource "google_compute_firewall" "block_all_outgoing_traffic" {
-  name    = "block-all-outgoing-traffic"
+resource "google_compute_firewall" "deny_all_egress" {
+  name    = "deny-all-egress"
   network = "${google_compute_network.openshift.name}"
 
   priority = 1200
@@ -119,6 +119,20 @@ resource "google_compute_firewall" "ansible_controller_access" {
   target_tags = ["ansible-controller"]
 
   source_ranges = ["${var.ssh_ip_ranges}"]
+}
+
+resource "google_compute_firewall" "allow_https_egress_on_controller" {
+  name    = "allow-https-egress-on-controller"
+  network = "${google_compute_network.openshift.name}"
+
+  direction = "EGRESS"
+
+  allow {
+    ports    = ["443", "80"]
+    protocol = "tcp"
+  }
+
+  target_tags = ["ansible-controller"]
 }
 
 resource "google_compute_firewall" "ansible_controller_to_openshift" {
