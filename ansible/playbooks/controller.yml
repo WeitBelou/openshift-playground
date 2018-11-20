@@ -6,7 +6,7 @@
   tasks:
     - name: Fix RPM key
       command: rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
-    
+
     - name: Install subscription-manager
       become: true
       yum:
@@ -36,7 +36,7 @@
         - rhel-7-server-extras-rpms
         - rhel-7-server-ansible-2.6-rpms
         - rhel-7-server-ose-3.11-rpms
-    
+
     - name: Install required packages
       become: true
       yum:
@@ -45,7 +45,7 @@
           - createrepo
           - docker
           - git
-    
+
     - name: Create directory to serve repos
       file:
         state: directory
@@ -71,9 +71,25 @@
       yum:
         name: nginx
         state: present
-    
+
     - name: Copy repos to public dir
       copy:
         src: /tmp/repos
         dest: /usr/share/nginx/html
         mode: u+rw,g+r,o+r
+
+    - name: Open firewall
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+    
+    - name: Enable nginx
+      systemd:
+        name: nginx
+        state: enabled
+
+    - name: Start nginx
+      systemd:
+        name: nginx
+        state: started
