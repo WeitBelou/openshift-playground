@@ -97,7 +97,6 @@
         - name: openshift3/prometheus-alertmanager
         - name: openshift3/prometheus-node-exporter
 
-        # 
         - name: cloudforms46/cfme-openshift-postgresql
           tag: latest
         - name: cloudforms46/cfme-openshift-memcached

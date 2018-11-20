@@ -20,27 +20,13 @@
 
     - name: Sync packages
       become: true
-      command: reposync --gpgcheck -lm --repoid={{ item }} --download_path=/tmp/repos
-      with_items:
-        - rhel-7-server-rpms
-        - rhel-7-server-extras-rpms
-        - rhel-7-server-ansible-2.6-rpms
-        - rhel-7-server-ose-3.11-rpms
+      command: reposync -lgm --repoid={{ item }} --download_path=/usr/share/nginx/html/repos
+      with_items: "{{ redhat_repos }}"
 
     - name: Create repos for packages
       become: true
-      command: createrepo -v /tmp/repos/{{ item }} -o /tmp/repos/{{ item }}
-      with_items:
-        - rhel-7-server-rpms
-        - rhel-7-server-extras-rpms
-        - rhel-7-server-ansible-2.6-rpms
-        - rhel-7-server-ose-3.11-rpms
-
-    - name: Copy repos to public dir
-      copy:
-        src: /tmp/repos
-        dest: /usr/share/nginx/html
-        mode: u+rw,g+r,o+r
+      command: createrepo -v  -o /usr/share/nginx/html/repos/{{ item }}
+      with_items: "{{ redhat_repos }}"
 
     - name: Open firewall
       become: true
@@ -48,7 +34,7 @@
         service: http
         permanent: true
         state: enabled
-    
+
     - name: Enable nginx
       become: true
       systemd:

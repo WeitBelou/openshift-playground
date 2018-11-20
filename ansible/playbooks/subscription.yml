@@ -33,8 +33,4 @@
       rhsm_repository:
         name: "{{ item }}"
         state: enabled
-      with_items:
-        - rhel-7-server-rpms
-        - rhel-7-server-extras-rpms
-        - rhel-7-server-ansible-2.6-rpms
-        - rhel-7-server-ose-3.11-rpms
+      with_items: "{{ redhat_repos }}"
