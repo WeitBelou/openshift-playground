@@ -8,6 +8,7 @@ resource "google_compute_instance" "ansible_controller" {
   boot_disk {
     initialize_params {
       image = "${var.base_image}"
+      size  = 146
     }
   }
 

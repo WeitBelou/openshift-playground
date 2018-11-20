@@ -1,0 +1,40 @@
+---
+- hosts: ansible-controller
+  vars_files:
+    - ../credentials.yml
+
+  tasks:
+    - name: Import RPM GPG key
+      rpm_key:
+        state: present
+        key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+
+    - name: Install subscription-manager
+      become: true
+      yum:
+        name: subscription-manager
+
+    - name: Enable registration
+      become: true
+      redhat_subscription:
+        state: present
+        username: "{{ redhat_username }}"
+        password: "{{ redhat_password }}"
+        auto_attach: true
+
+    - name: Disable all RHSM repositories
+      become: true
+      rhsm_repository:
+        name: '*'
+        state: disabled
+
+    - name: Enable repos
+      become: true
+      rhsm_repository:
+        name: "{{ item }}"
+        state: enabled
+      with_items:
+        - rhel-7-server-rpms
+        - rhel-7-server-extras-rpms
+        - rhel-7-server-ansible-2.6-rpms
+        - rhel-7-server-ose-3.11-rpms

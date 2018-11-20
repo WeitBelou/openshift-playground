@@ -4,6 +4,7 @@
 
   tasks:
     - name: Add repos to list
+      become: true
       yum_repository:
         name: "{{ item }}"
         baseurl: http://{{ internal_yum_repo_ip }}/repos/{{ item }}
@@ -26,3 +27,36 @@
         - { name: master.openshift, ip: "{{ hostvars['master.openshift']['ansible_host'] }}" }
         - { name: node-1.openshift, ip: "{{ hostvars['node-1.openshift']['ansible_host'] }}" }
         - { name: node-2.openshift, ip: "{{ hostvars['node-2.openshift']['ansible_host'] }}" }
+
+    - name: Install base packages
+      become: true
+      yum:
+        state: latest
+        name:
+          - wget
+          - git
+          - net-tools
+          - bind-utils
+          - yum-utils
+          - iptables-services
+          - bridge-utils
+          - bash-completion
+          - kexec-tools
+          - sos
+          - psacct
+
+    - name: Reboot
+      become: true
+      reboot:
+
+    - name: Install openshift-ansible
+      become: true
+      yum:
+        state: latest
+        name: openshift-ansible
+
+    - name: Install docker
+      become: true
+      yum:
+        state: present
+        name: docker-1.13.1

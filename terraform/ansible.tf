@@ -12,7 +12,13 @@ resource "null_resource" "ansible_files" {
 
   provisioner "file" {
     source      = "../ansible"
-    destination = "~/ansible"
+    destination = "~"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "[ -d ~/.vault_keys ] || mkdir -p ~/.vault_keys",
+    ]
   }
 
   provisioner "file" {
@@ -23,5 +29,11 @@ resource "null_resource" "ansible_files" {
   provisioner "file" {
     source      = "~/.ssh/id_rsa_openshift"
     destination = "~/.ssh/id_rsa_openshift"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod 600 ~/.ssh/id_rsa_openshift",
+    ]
   }
 }
