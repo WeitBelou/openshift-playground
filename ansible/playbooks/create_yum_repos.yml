@@ -1,48 +1,46 @@
 ---
 - hosts: ansible-controller
+  become: true
+
   vars_files:
     - ../credentials.yml
 
   tasks:
     - name: Install required packages
-      become: true
       yum:
         name:
           - yum-utils
           - createrepo
-          - nginx
+          - httpd
           - git
-
-    - name: Create directory to serve repos
-      file:
-        state: directory
-        path: /tmp/repos
 
     - name: Sync packages
       become: true
-      command: reposync -lgm --repoid={{ item }} --download_path=/usr/share/nginx/html/repos
+      command: reposync -lgm --repoid={{ item }} --download_path=/var/www/html/repos
       with_items: "{{ redhat_repos }}"
 
     - name: Create repos for packages
       become: true
-      command: createrepo -v  -o /usr/share/nginx/html/repos/{{ item }}
+      command: createrepo -v /var/www/html/repos/{{ item }}
       with_items: "{{ redhat_repos }}"
 
+    - name: Set permissions for packages
+      file:
+        recurse: true
+        path: /var/www/html/repos
+        mode: o+r
+
+    - name: Restore context
+      command: restorecon -vR /var/www/html
+
     - name: Open firewall
-      become: true
       firewalld:
         service: http
         permanent: true
         state: enabled
 
-    - name: Enable nginx
-      become: true
+    - name: Start and enable httpd
       systemd:
-        name: nginx
-        state: enabled
-
-    - name: Start nginx
-      become: true
-      systemd:
-        name: nginx
+        name: httpd
+        enabled: true
         state: started
