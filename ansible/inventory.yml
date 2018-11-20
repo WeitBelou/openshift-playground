@@ -6,9 +6,6 @@ all:
         vars:
           ansible_connection: local
           ansible_python_interpreter: "{{ansible_playbook_python}}"
-    registry:
-      registry.openshift:
-        ansible_host: 
   children:
     openshift:
       hosts:
@@ -19,4 +16,5 @@ all:
         node02.openshift:
           ansible_host: 10.164.0.4
   vars:
-    internal_yum_repo_ip: 10.164.0.3
+    yum_repo_ip: 10.164.0.3
+    docker_registry_ip: 10.164.0.3

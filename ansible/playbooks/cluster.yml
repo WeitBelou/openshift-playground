@@ -7,7 +7,7 @@
       become: true
       yum_repository:
         name: "{{ item }}"
-        baseurl: http://{{ internal_yum_repo_ip }}/repos/{{ item }}
+        baseurl: http://{{ yum_repo_ip }}/repos/{{ item }}
         gpgcheck: false
         enabled: true
         file: ose

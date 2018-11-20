@@ -1,0 +1,29 @@
+---
+- hosts: ansible-controller
+  become: true
+
+  vars_files:
+    - ../credentials.yml
+
+  tasks:
+    - name: Install required packages
+      yum:
+        name:
+          - python2-pip
+          - docker-1.13.1
+
+    - name: Install pip packages
+      pip:
+        name: docker
+
+    - name: Start and enable docker
+      systemd:
+        name: docker
+        enabled: true
+        state: started
+
+    - name: Login to registry
+      docker_login:
+          username: "{{ redhat_username }}"
+          password: "{{ redhat_password }}"
+          registry_url: registry.redhat.io
