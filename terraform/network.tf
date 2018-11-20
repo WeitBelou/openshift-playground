@@ -113,7 +113,7 @@ resource "google_compute_firewall" "ansible_controller_access" {
   # External SSH access to controller
   allow {
     protocol = "tcp"
-    ports    = ["22"]
+    ports    = ["22", "80"]
   }
 
   target_tags = ["ansible-controller"]

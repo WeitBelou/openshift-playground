@@ -12,7 +12,7 @@ variable "openshift_node_machine_type" {
 }
 
 variable "ansible_controller_machine_type" {
-  default = "g1-small"
+  default = "n1-standard-4"
 }
 
 variable "openshift_nodes_count" {

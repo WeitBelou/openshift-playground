@@ -1,0 +1,19 @@
+
+all:
+  hosts:
+    ansible-controller:
+      localhost:
+        vars:
+          ansible_connection: local
+          ansible_python_interpreter: "{{ansible_playbook_python}}"
+  children:
+    openshift:
+      hosts:
+        master.openshift:
+          ansible_host: 10.164.0.5
+        node-1.openshift:
+          ansible_host: 10.164.0.2
+        node02.openshift:
+          ansible_host: 10.164.0.4
+  vars:
+    internal_yum_repo_ip: 10.164.0.3

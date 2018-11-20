@@ -3,6 +3,8 @@ resource "google_compute_instance" "ansible_controller" {
 
   machine_type = "${var.ansible_controller_machine_type}"
 
+  allow_stopping_for_update = true
+
   boot_disk {
     initialize_params {
       image = "${var.base_image}"

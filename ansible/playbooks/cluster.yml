@@ -1,0 +1,28 @@
+---
+- hosts: openshift
+  become: true
+
+  tasks:
+    - name: Add repos to list
+      yum_repository:
+        name: "{{ item }}"
+        baseurl: http://{{ internal_yum_repo_ip }}/repos/{{ item }}
+        gpgcheck: false
+        enabled: true
+        file: ose
+      with_items:
+        - rhel-7-server-rpms
+        - rhel-7-server-extras-rpms
+        - rhel-7-server-ansible-2.6-rpms
+        - rhel-7-server-ose-3.11-rpms
+
+    - name: Add mappings to /etc/hosts
+      blockinfile:
+        path: /etc/hosts
+        block: |
+          {{ item.ip }} {{ item.name }}
+        marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+      with_items:
+        - { name: master.openshift, ip: "{{ hostvars['master.openshift'] }}" }
+        - { name: node-1.openshift, ip: "{{ }}" }
+        - { name: node-2.openshift, ip: "{{ }}" }

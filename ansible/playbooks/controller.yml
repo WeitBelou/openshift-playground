@@ -1,0 +1,79 @@
+---
+- hosts: ansible-controller
+  vars_files:
+    - ../credentials.yml
+
+  tasks:
+    - name: Fix RPM key
+      command: rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+    
+    - name: Install subscription-manager
+      become: true
+      yum:
+        name: subscription-manager
+
+    - name: Enable registration
+      become: true
+      redhat_subscription:
+        state: present
+        username: "{{ redhat_username }}"
+        password: "{{ redhat_password }}"
+        auto_attach: true
+
+    - name: Disable all RHSM repositories
+      become: true
+      rhsm_repository:
+        name: '*'
+        state: disabled
+
+    - name: Enable repos
+      become: true
+      rhsm_repository:
+        name: "{{ item }}"
+        state: enabled
+      with_items:
+        - rhel-7-server-rpms
+        - rhel-7-server-extras-rpms
+        - rhel-7-server-ansible-2.6-rpms
+        - rhel-7-server-ose-3.11-rpms
+    
+    - name: Install required packages
+      become: true
+      yum:
+        name:
+          - yum-utils
+          - createrepo
+          - docker
+          - git
+    
+    - name: Create directory to serve repos
+      file:
+        state: directory
+        path: /tmp/repos
+
+    - name: Sync packages
+      command: reposync --gpgcheck -lm --repoid={{ item }} --download_path=/tmp/repos
+      with_items:
+        - rhel-7-server-rpms
+        - rhel-7-server-extras-rpms
+        - rhel-7-server-ansible-2.6-rpms
+        - rhel-7-server-ose-3.11-rpms
+
+    - name: Create repos for packages
+      command: createrepo -v /tmp/repos/{{ item }} -o /tmp/repos/{{ item }}
+      with_items:
+        - rhel-7-server-rpms
+        - rhel-7-server-extras-rpms
+        - rhel-7-server-ansible-2.6-rpms
+        - rhel-7-server-ose-3.11-rpms
+
+    - name: Install nginx for repos
+      yum:
+        name: nginx
+        state: present
+    
+    - name: Copy repos to public dir
+      copy:
+        src: /tmp/repos
+        dest: /usr/share/nginx/html
+        mode: u+rw,g+r,o+r
