@@ -5,6 +5,10 @@ resource "google_compute_instance" "ansible_controller" {
 
   allow_stopping_for_update = true
 
+  metadata {
+    sshKeys = "openshift:${file("~/.ssh/id_rsa_openshift.pub")}"
+  }
+
   boot_disk {
     initialize_params {
       image = "${var.base_image}"
@@ -26,6 +30,10 @@ resource "google_compute_instance" "openshift_master" {
 
   machine_type = "${var.openshift_master_machine_type}"
 
+  metadata {
+    sshKeys = "openshift:${file("~/.ssh/id_rsa_openshift.pub")}"
+  }
+
   boot_disk {
     initialize_params {
       image = "${var.base_image}"
@@ -45,6 +53,10 @@ resource "google_compute_instance" "openshift_master" {
 resource "google_compute_instance" "openshift_nodes" {
   count = "${var.openshift_nodes_count}"
   name  = "openshift-node-${count.index + 1}"
+
+  metadata {
+    sshKeys = "openshift:${file("~/.ssh/id_rsa_openshift.pub")}"
+  }
 
   machine_type = "${var.openshift_node_machine_type}"
 

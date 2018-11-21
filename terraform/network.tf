@@ -113,7 +113,7 @@ resource "google_compute_firewall" "ansible_controller_access" {
   # External SSH access to controller
   allow {
     protocol = "tcp"
-    ports    = ["22", "80"]
+    ports    = ["22"]
   }
 
   target_tags = ["ansible-controller"]
@@ -121,18 +121,34 @@ resource "google_compute_firewall" "ansible_controller_access" {
   source_ranges = ["${var.ssh_ip_ranges}"]
 }
 
-resource "google_compute_firewall" "allow_https_egress_on_controller" {
-  name    = "allow-https-egress-on-controller"
+resource "google_compute_firewall" "allow_https_and_ssh_egress_on_controller" {
+  name    = "allow-https-ssh-egress-on-controller"
   network = "${google_compute_network.openshift.name}"
 
   direction = "EGRESS"
 
   allow {
-    ports    = ["443", "80"]
     protocol = "tcp"
+    ports    = ["80", "443", "22"]
   }
 
   target_tags = ["ansible-controller"]
+}
+
+resource "google_compute_firewall" "allow_https_egress_on_openshift_nodes" {
+  name    = "allow-https-egress-to-controller"
+  network = "${google_compute_network.openshift.name}"
+
+  direction = "EGRESS"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+
+  target_tags = ["openshift-master", "openshift-node"]
+
+  destination_ranges = ["${google_compute_instance.ansible_controller.network_interface.0.network_ip}/32"]
 }
 
 resource "google_compute_firewall" "ansible_controller_to_openshift" {

@@ -13,7 +13,7 @@ all:
           ansible_host: 10.164.0.5
         node-1.openshift:
           ansible_host: 10.164.0.2
-        node02.openshift:
+        node-2.openshift:
           ansible_host: 10.164.0.4
   vars:
     yum_repo_ip: 10.164.0.3

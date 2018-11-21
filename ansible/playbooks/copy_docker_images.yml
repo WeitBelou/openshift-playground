@@ -6,15 +6,40 @@
     - ../credentials.yml
 
   tasks:
+    - name: Install required packages
+      yum:
+        name:
+          - python2-pip
+          - docker-1.13.1
+
+    - name: Install pip packages
+      pip:
+        name: docker
+
+    - name: Start and enable docker
+      systemd:
+        name: docker
+        enabled: true
+        state: started
+
+    - name: Login to registry
+      docker_login:
+          username: "{{ redhat_username }}"
+          password: "{{ redhat_password }}"
+          registry_url: registry.redhat.io
+    
+    - name: Add insecure registry
+      
+
     - name: Pull image with private registry
       docker_image:
-        name: registry
-        tag: 2
+        name: registry:2
 
     - name: Run docker registry
       docker_container:
         name: registry
         image: registry:2
+        restart_policy: always
         published_ports:
           - "5000:5000"
 
@@ -25,7 +50,7 @@
         tag: "{{ item.tag | default('v3.11.16') }}"
         push: true
       with_items:
-        # Required
+      # Required
         - name: openshift3/apb-base
         - name: openshift3/apb-tools
         - name: openshift3/automation-broker-apb
