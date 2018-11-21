@@ -166,3 +166,19 @@ resource "google_compute_firewall" "ansible_controller_to_openshift" {
 
   source_ranges = []
 }
+
+resource "google_compute_firewall" "openshift_to_ansible_controller" {
+  name    = "openshift-to-ansible-controller"
+  network = "${google_compute_network.openshift.name}"
+
+  # SSH access
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+
+  source_tags = ["openshift-master", "openshift-node"]
+  target_tags = ["ansible-controller"]
+
+  source_ranges = []
+}

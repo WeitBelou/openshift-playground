@@ -10,9 +10,9 @@ all:
     openshift:
       hosts:
         master.openshift:
-          ansible_host: 10.164.0.5
-        node-1.openshift:
           ansible_host: 10.164.0.2
+        node-1.openshift:
+          ansible_host: 10.164.0.5
         node-2.openshift:
           ansible_host: 10.164.0.4
   vars:

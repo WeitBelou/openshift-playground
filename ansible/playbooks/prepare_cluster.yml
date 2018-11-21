@@ -2,7 +2,61 @@
 - hosts: openshift
   become: true
 
+  handlers:
+    - name: yum-clean-metadata
+      command: yum clean metadata
+      args:
+        warn: no
+
   tasks:
+    - name: Disable epel repos
+      yum_repository:
+        name: "{{ item }}"
+        file: epel
+        state: absent
+      with_items:
+        - epel
+        - epel-debuginfo
+        - epel-source
+      notify: yum-clean-metadata
+
+    - name: Disable epel-testing repos
+      yum_repository:
+        name: "{{ item }}"
+        file: epel-testing
+        state: absent
+      with_items:
+        - epel-testing
+        - epel-testing-debuginfo
+        - epel-testing-source
+      notify: yum-clean-metadata
+
+    - name: Disable google-cloud repos
+      yum_repository:
+        name: "{{ item }}"
+        file: google-cloud
+        state: absent
+      with_items:
+        - google-cloud-compute
+        - google-cloud-sdk
+      notify: yum-clean-metadata
+
+    - name: Disable default rhel cloud repos
+      yum_repository:
+        name: "{{ item }}"
+        file: rh-cloud
+        state: absent
+      with_items:
+        - rhui-rhel-7-server-rhui-extras-rpms
+        - rhui-rhel-7-server-rhui-optional-rpms
+        - rhui-rhel-7-server-rhui-rh-common-rpms
+        - rhui-rhel-7-server-rhui-rpms
+        - rhui-rhel-7-server-rhui-supplementary-rpms
+        - rhui-rhel-ha-for-rhel-7-server-rhui-rpms
+        - rhui-rhel-rs-for-rhel-7-server-rhui-rpms
+        - rhui-rhel-server-rhui-rhscl-7-rpms
+      notify: yum-clean-metadata
+
     - name: Add repos to list
       yum_repository:
         name: "{{ item }}"

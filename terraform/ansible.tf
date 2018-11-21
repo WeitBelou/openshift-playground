@@ -36,11 +36,4 @@ resource "null_resource" "ansible_files" {
       "chmod 600 ~/.ssh/id_rsa_openshift",
     ]
   }
-
-  provisioner "remote-exec" {
-    inline = [
-      "cd ansible",
-      "ansible-playbook playbooks/run_installer.yml",
-    ]
-  }
 }
