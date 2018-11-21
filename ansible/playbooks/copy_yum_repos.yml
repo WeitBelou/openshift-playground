@@ -6,6 +6,11 @@
     - ../credentials.yml
 
   tasks:
+    - name: Import RPM GPG key
+      rpm_key:
+        state: present
+        key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+
     - name: Install required packages
       yum:
         name:
