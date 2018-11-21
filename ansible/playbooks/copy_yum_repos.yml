@@ -15,12 +15,11 @@
           - git
 
     - name: Sync packages
-      become: true
-      command: reposync -lgm {{ redhat_repos | join(' --repoid=') }} --download_path=/var/www/html/repos
+      command: reposync -lgm --repoid={{ item }} --download_path=/var/www/html/repos
+      with_items: "{{ redhat_repos }}"
 
     - name: Create repos for packages
-      become: true
-      command: createrepo --update -v /var/www/html/repos/{{ item }} -o /var/www/html/repos/{{ item }}
+      command: createrepo /var/www/html/repos/{{ item }} -o /var/www/html/repos/{{ item }}
       with_items: "{{ redhat_repos }}"
 
     - name: Set permissions for packages

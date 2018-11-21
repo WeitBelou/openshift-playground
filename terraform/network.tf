@@ -143,7 +143,7 @@ resource "google_compute_firewall" "allow_https_egress_on_openshift_nodes" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80", "443"]
+    ports    = ["80", "443", "5000"]
   }
 
   target_tags = ["openshift-master", "openshift-node"]
@@ -174,7 +174,7 @@ resource "google_compute_firewall" "openshift_to_ansible_controller" {
   # SSH access
   allow {
     protocol = "tcp"
-    ports    = ["80", "443"]
+    ports    = ["80", "443", "5000"]
   }
 
   source_tags = ["openshift-master", "openshift-node"]
