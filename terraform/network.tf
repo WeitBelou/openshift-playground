@@ -15,6 +15,22 @@ resource "google_compute_firewall" "deny_all_egress" {
   }
 }
 
+resource "google_compute_firewall" "egress_in_network" {
+  name    = "allow-egress-in-network"
+  network = "${google_compute_network.openshift.name}"
+
+  direction = "EGRESS"
+
+  allow {
+    protocol = "all"
+  }
+
+  target_tags = ["openshift-master", "openshift-node"]
+
+  # FIXME(ikosolapov): Replace CIDR hardcode for subnetwork in europe-west4
+  destination_ranges = ["10.164.0.0/20"]
+}
+
 resource "google_compute_firewall" "openshift_node_to_node" {
   name    = "openshift-node-to-node"
   network = "${google_compute_network.openshift.name}"
@@ -129,26 +145,13 @@ resource "google_compute_firewall" "allow_https_and_ssh_egress_on_controller" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80", "443", "22"]
+    ports    = ["22"]
   }
 
   target_tags = ["ansible-controller"]
-}
 
-resource "google_compute_firewall" "allow_https_egress_on_openshift_nodes" {
-  name    = "allow-https-egress-to-controller"
-  network = "${google_compute_network.openshift.name}"
-
-  direction = "EGRESS"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["80", "443", "5000"]
-  }
-
-  target_tags = ["openshift-master", "openshift-node"]
-
-  destination_ranges = ["${google_compute_instance.ansible_controller.network_interface.0.network_ip}/32"]
+  # FIXME(ikosolapov): Replace CIDR hardcode for subnetwork in europe-west4
+  destination_ranges = ["10.164.0.0/20"]
 }
 
 resource "google_compute_firewall" "ansible_controller_to_openshift" {
@@ -171,7 +174,6 @@ resource "google_compute_firewall" "openshift_to_ansible_controller" {
   name    = "openshift-to-ansible-controller"
   network = "${google_compute_network.openshift.name}"
 
-  # SSH access
   allow {
     protocol = "tcp"
     ports    = ["80", "443", "5000"]

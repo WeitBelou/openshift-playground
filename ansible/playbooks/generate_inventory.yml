@@ -13,9 +13,9 @@
           {{ item.ip }} {{ item.name }}
         marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
       with_items:
-        - { name: master.openshift, ip: "{{ hostvars['master.openshift']['ansible_host'] }}" }
-        - { name: node-1.openshift, ip: "{{ hostvars['node-1.openshift']['ansible_host'] }}" }
-        - { name: node-2.openshift, ip: "{{ hostvars['node-2.openshift']['ansible_host'] }}" }
+        - { name: openshift-master.internal, ip: "{{ hostvars['openshift-master.internal']['ansible_host'] }}" }
+        - { name: openshift-node-1.internal, ip: "{{ hostvars['openshift-master.internal']['ansible_host'] }}" }
+        - { name: openshift-node-2.internal, ip: "{{ hostvars['openshift-master.internal']['ansible_host'] }}" }
 
     - name: Generate inventory file
       template:

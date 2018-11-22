@@ -9,11 +9,11 @@ all:
   children:
     openshift:
       hosts:
-        master.openshift:
+        openshift-master.internal:
           ansible_host: 10.164.0.2
-        node-1.openshift:
+        openshift-node-1.internal:
           ansible_host: 10.164.0.5
-        node-2.openshift:
+        openshift-node-2.internal:
           ansible_host: 10.164.0.4
   vars:
     yum_repo_ip: 10.164.0.3
@@ -23,3 +23,206 @@ all:
       - rhel-7-server-extras-rpms
       - rhel-7-server-ansible-2.6-rpms
       - rhel-7-server-ose-3.11-rpms
+    openshift_docker_images:
+      - name: openshift3/apb-base
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/apb-tools
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/automation-broker-apb
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/csi-attacher
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/csi-driver-registrar
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/csi-livenessprobe
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/csi-provisioner
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/grafana
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/image-inspector
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/mariadb-apb
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/mediawiki
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/mediawiki-apb
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/mysql-apb
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-ansible
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-ansible-service-broker
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-cli
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-cluster-autoscaler
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-cluster-capacity
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-cluster-monitoring-operator
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-console
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-configmap-reloader
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-control-plane
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-deployer
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-descheduler
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-docker-builder
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-docker-registry
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-efs-provisioner
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-egress-dns-proxy
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-egress-http-proxy
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-egress-router
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-haproxy-router
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-hyperkube
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-hypershift
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-keepalived-ipfailover
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-kube-rbac-proxy
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-kube-state-metrics
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-metrics-server
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-node
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-node-problem-detector
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-operator-lifecycle-manager
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-pod
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-prometheus-config-reloader
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-prometheus-operator
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-recycler
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-service-catalog
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-template-service-broker
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-web-console
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/postgresql-apb
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/registry-console
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/snapshot-controller
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/snapshot-provisioner
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: rhel7/etcd
+        tag: 3.2.22
+
+      # Optional
+      - name: openshift3/metrics-cassandra
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/metrics-hawkular-metrics
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/metrics-hawkular-openshift-agent
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/metrics-heapster
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/oauth-proxy
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-logging-curator5
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-logging-elasticsearch5
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-logging-eventrouter
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-logging-fluentd
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-logging-kibana5
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/ose-metrics-schema-installer
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/prometheus
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/prometheus-alert-buffer
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/prometheus-alertmanager
+        tag: v3.11.16
+        major_tag: v3.11
+      - name: openshift3/prometheus-node-exporter
+        tag: v3.11.16
+        major_tag: v3.11
