@@ -1,17 +1,17 @@
 ---
 # Manage subscription
 - hosts: ansible-controller
+  become: true
+
   vars_files:
     - ../credentials.yml
 
   tasks:
     - name: Install subscription-manager
-      become: true
       yum:
         name: subscription-manager
 
     - name: Enable registration
-      become: true
       redhat_subscription:
         state: present
         username: "{{ redhat_username }}"
@@ -19,13 +19,11 @@
         auto_attach: true
 
     - name: Disable all RHSM repositories
-      become: true
       rhsm_repository:
         name: '*'
         state: disabled
 
     - name: Enable repos
-      become: true
       rhsm_repository:
         name: "{{ item }}"
         state: enabled
