@@ -60,7 +60,7 @@ resource "google_compute_firewall" "openshift_node_to_master" {
   # Required for node hosts to communicate to the master API, for the node hosts to post back status, to receive tasks, and so on.
   allow {
     protocol = "tcp"
-    ports    = ["443"]
+    ports    = ["443", "8443"]
   }
 
   # Required for DNS resolution of cluster services (SkyDNS).
@@ -110,7 +110,7 @@ resource "google_compute_firewall" "openshift_external_to_master" {
   # Required for node hosts to communicate to the master API, for node hosts to post back status, to receive tasks, and so on.
   allow {
     protocol = "tcp"
-    ports    = ["443"]
+    ports    = ["443", "8443"]
   }
 
   # Port that the controller service listens on. Required to be open for the /metrics and /healthz endpoints.
