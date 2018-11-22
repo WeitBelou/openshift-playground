@@ -1,33 +1,41 @@
-# Create an OSEv3 group that contains the masters, nodes, and etcd groups
+# Set variables common for all OSEv3 hosts
+[OSEv3:vars]
+# Use enterprise version
+openshift_deployment_type=openshift-enterprise
+
+# Use 'openshift' user instead of 'root'
+ansible_ssh_user=openshift
+ansible_become=true
+
+# Set hostname for master
+openshift_master_cluster_hostname=openshift-master.internal
+openshift_master_cluster_public_hostname=openshift-master.internal
+
+# Use firewalld insted of iptables
+os_firewall_use_firewalld=true
+
+# Change to private docker registry
+oreg_url={{ docker_registry_ip }}:5000/openshift3/ose-$${component}:$${version}
+openshift_docker_insecure_registries={{ docker_registry_ip }}:5000
+openshift_examples_modify_imagestreams=true
+
+# Specify image tag
+openshift_image_tag=v3.11.16
+
 [OSEv3:children]
 masters
 nodes
 etcd
 
-# Set variables common for all OSEv3 hosts
-[OSEv3:vars]
-ansible_ssh_user=openshift
-ansible_become=true
-
-openshift_master_cluster_hostname=openshift-master.internal
-openshift_master_cluster_public_hostname=openshift-master.internal
-os_firewall_use_firewalld=true
-
-openshift_deployment_type=openshift-enterprise
-oreg_url={{ docker_registry_ip }}:5000/openshift3/ose-$${component}:$${version}
-openshift_image_tag=v3.11.16
-openshift_docker_insecure_registries={{ docker_registry_ip }}:5000
-openshift_examples_modify_imagestreams=true
-
-# host group for masters
+# Specify master hosts
 [masters]
 openshift-master.internal
 
-# host group for etcd
+# Specify etcd hosts
 [etcd]
 openshift-master.internal
 
-# host group for nodes, includes region info
+# Specify nodes groups
 [nodes]
 openshift-master.internal openshift_node_group_name='node-config-master'
 openshift-node-1.internal openshift_node_group_name='node-config-infra'
