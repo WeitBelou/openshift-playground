@@ -87,3 +87,33 @@ resource "google_compute_firewall" "http_https_openshift_to_ansible_controller" 
 
   source_ranges = []
 }
+
+resource "google_compute_firewall" "openshift_to_yum_repo" {
+  name    = "openshift-to-yum-repo"
+  network = "${google_compute_network.openshift.name}"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+
+  target_tags = ["yum-repo"]
+  source_tags = ["openshift-master", "openshift-node"]
+
+  source_ranges = []
+}
+
+resource "google_compute_firewall" "openshift_to_docker_registry" {
+  name    = "openshift-to-docker-registry"
+  network = "${google_compute_network.openshift.name}"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["5000"]
+  }
+
+  target_tags = ["docker-registry"]
+  source_tags = ["openshift-master", "openshift-node"]
+
+  source_ranges = []
+}
