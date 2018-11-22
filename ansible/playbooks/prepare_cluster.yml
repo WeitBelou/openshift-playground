@@ -1,4 +1,37 @@
 ---
+# Manage subscription
+- hosts: ansible-controller
+  vars_files:
+    - ../credentials.yml
+
+  tasks:
+    - name: Install subscription-manager
+      become: true
+      yum:
+        name: subscription-manager
+
+    - name: Enable registration
+      become: true
+      redhat_subscription:
+        state: present
+        username: "{{ redhat_username }}"
+        password: "{{ redhat_password }}"
+        auto_attach: true
+
+    - name: Disable all RHSM repositories
+      become: true
+      rhsm_repository:
+        name: '*'
+        state: disabled
+
+    - name: Enable repos
+      become: true
+      rhsm_repository:
+        name: "{{ item }}"
+        state: enabled
+      with_items: "{{ redhat_repos }}"
+
+# Modify repos list
 - hosts: openshift
   become: true
 
@@ -67,6 +100,11 @@
         file: ose
       with_items: "{{ redhat_repos }}"
 
+# Update hosts
+- hosts: all
+  become: true
+
+  tasks:
     - name: Add mappings to /etc/hosts
       blockinfile:
         path: /etc/hosts
@@ -77,3 +115,13 @@
         - { name: openshift-master.internal, ip: "{{ hostvars['openshift-master.internal']['ansible_host'] }}" }
         - { name: openshift-node-1.internal, ip: "{{ hostvars['openshift-node-1.internal']['ansible_host'] }}" }
         - { name: openshift-node-2.internal, ip: "{{ hostvars['openshift-node-2.internal']['ansible_host'] }}" }
+
+# Generate inventory
+- hosts: ansible-controller
+  become: true
+
+  tasks:
+    - name: Generate inventory file
+      template:
+        src: templates/inventory.j2
+        dest: /etc/ansible/hosts
