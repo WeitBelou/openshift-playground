@@ -12,9 +12,9 @@ all:
         openshift-master.internal:
           ansible_host: 10.164.0.2
         openshift-node-1.internal:
-          ansible_host: 10.164.0.5
-        openshift-node-2.internal:
           ansible_host: 10.164.0.4
+        openshift-node-2.internal:
+          ansible_host: 10.164.0.5
   vars:
     yum_repo_ip: 10.164.0.3
     docker_registry_ip: 10.164.0.3
