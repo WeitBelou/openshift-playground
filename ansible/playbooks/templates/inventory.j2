@@ -10,6 +10,7 @@ ansible_ssh_user=openshift
 ansible_become=true
 
 openshift_master_cluster_hostname=openshift-master.internal
+openshift_master_cluster_public_hostname=openshift-master.internal
 
 openshift_deployment_type=openshift-enterprise
 oreg_url={{ docker_registry_ip }}:5000/openshift3/ose-${component}:${version}
