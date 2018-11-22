@@ -27,6 +27,10 @@ variable "openshift_master_disk_size" {
   default = 60
 }
 
-variable "ssh_ip_ranges" {
+variable "trusted_ip_ranges" {
   default = "0.0.0.0/0"
+}
+
+variable "subnetwork_cidr" {
+  default = "10.164.0.0/20"
 }
