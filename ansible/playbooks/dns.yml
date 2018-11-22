@@ -1,0 +1,10 @@
+---
+# Modify hosts
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Add mapping to /etc/hosts
+      template:
+        src: templates/hosts.j2
+        dest: /etc/hosts

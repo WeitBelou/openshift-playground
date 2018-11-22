@@ -1,0 +1,7 @@
+---
+- import_playbook: subscription.yml
+- import_playbook: dns.yml
+- import_playbook: copy_yum_repos.yml
+- import_playbook: yum_repos.yml
+- import_playbook: copy_docker_images.yml
+- import_playbook: generate_inventory.yml

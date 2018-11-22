@@ -1,0 +1,10 @@
+---
+# Generate inventory
+- hosts: ansible-controller
+  become: true
+
+  tasks:
+    - name: Generate inventory file
+      template:
+        src: templates/inventory.j2
+        dest: /etc/ansible/hosts

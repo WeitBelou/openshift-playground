@@ -18,6 +18,7 @@ all:
   vars:
     yum_repo_ip: ${ansible_controller_internal_ip}
     docker_registry_ip: ${ansible_controller_internal_ip}
+    dns_ip: ${ansible_controller_internal_ip}
     redhat_repos:
       - rhel-7-server-rpms
       - rhel-7-server-extras-rpms
