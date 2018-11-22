@@ -1,3 +1,15 @@
+resource "template_dir" "ansible" {
+  source_dir      = "../ansible"
+  destination_dir = "/tmp/ansible"
+
+  vars {
+    openshift_master_internal_ip   = "${google_compute_instance.openshift_master.network_interface.0.network_ip}"
+    openshift_node_1_internal_ip   = "${google_compute_instance.openshift_nodes.0.network_interface.0.network_ip}"
+    openshift_node_2_internal_ip   = "${google_compute_instance.openshift_nodes.1.network_interface.0.network_ip}"
+    ansible_controller_internal_ip = "${google_compute_instance.ansible_controller.network_interface.0.network_ip}"
+  }
+}
+
 resource "null_resource" "ansible_files" {
   triggers {
     "always" = "${uuid()}"
@@ -10,9 +22,19 @@ resource "null_resource" "ansible_files" {
     private_key = "${file("~/.ssh/id_rsa_openshift")}"
   }
 
+  provisioner "remote-exec" {
+    inline = [
+      "rm -rf ~/ansible",
+    ]
+  }
+
   provisioner "file" {
-    source      = "../ansible"
+    source      = "${template_dir.ansible.destination_dir}"
     destination = "~"
+  }
+
+  provisioner "local-exec" {
+    command = "rm -rf ${template_dir.ansible.destination_dir}"
   }
 
   provisioner "remote-exec" {

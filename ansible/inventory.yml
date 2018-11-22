@@ -10,14 +10,14 @@ all:
     openshift:
       hosts:
         openshift-master.internal:
-          ansible_host: 10.164.0.5
+          ansible_host: ${openshift_master_internal_ip}
         openshift-node-1.internal:
-          ansible_host: 10.164.0.2
+          ansible_host: ${openshift_node_1_internal_ip}
         openshift-node-2.internal:
-          ansible_host: 10.164.0.4
+          ansible_host: ${openshift_node_2_internal_ip}
   vars:
-    yum_repo_ip: 10.164.0.3
-    docker_registry_ip: 10.164.0.3
+    yum_repo_ip: ${ansible_controller_internal_ip}
+    docker_registry_ip: ${ansible_controller_internal_ip}
     redhat_repos:
       - rhel-7-server-rpms
       - rhel-7-server-extras-rpms
