@@ -12,17 +12,17 @@
         name: subscription-manager
         state: present
 
-    - name: Disable all RHSM repositories
-      rhsm_repository:
-        name: '*'
-        state: disabled
-
     - name: Enable registration
       redhat_subscription:
         state: present
         username: "{{ redhat_username }}"
         password: "{{ redhat_password }}"
         auto_attach: true
+
+    - name: Disable all RHSM repositories
+      rhsm_repository:
+        name: '*'
+        state: disabled
 
     - name: Enable repos
       rhsm_repository:
