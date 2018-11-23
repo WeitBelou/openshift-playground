@@ -10,11 +10,8 @@ all:
     openshift:
       hosts:
         ${openshift_master_fqdn}:
-          ansible_host: ${openshift_master_internal_ip}
         ${openshift_node_1_fqdn}:
-          ansible_host: ${openshift_node_1_internal_ip}
         ${openshift_node_2_fqdn}:
-          ansible_host: ${openshift_node_2_internal_ip}
   vars:
     yum_repo_ip: ${ansible_controller_internal_ip}
     docker_registry_ip: ${ansible_controller_internal_ip}
