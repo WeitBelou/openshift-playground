@@ -41,6 +41,17 @@
         published_ports:
           - "5000:5000"
 
+    - name: Add insecure registries
+      template:
+        src: templates/etc/docker/daemon.json.j2
+        dest: /etc/docker/daemon.json
+
+    - name: Restart docker
+      systemd:
+        name: docker
+        state: restarted
+        daemon_reload: true
+
     - name: Pull and retag docker images
       docker_image:
         name: "registry.redhat.io/{{ item.name }}"

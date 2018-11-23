@@ -4,7 +4,12 @@
   become: true
 
   tasks:
+    - name: Install openshift-ansible
+      yum:
+        name: openshift-ansible
+        state: present
+
     - name: Generate inventory file
       template:
-        src: templates/inventory.j2
+        src: templates/etc/ansible/hosts.j2
         dest: /etc/ansible/hosts

@@ -6,8 +6,8 @@ resource "template_dir" "ansible" {
 
   vars {
     openshift_master_fqdn = "${google_compute_instance.openshift_master.name}.${google_compute_instance.openshift_master.zone}.c.${data.google_project.project.id}.internal"
-    openshift_node_1_fqdn = "$${google_compute_instance.openshift_nodes.0.name}.${google_compute_instance.openshift_nodes.0.zone}.c.${data.google_project.project.id}.internal"
-    openshift_node_2_fqdn = "$${google_compute_instance.openshift_nodes.1.name}.${google_compute_instance.openshift_nodes.1.zone}.c.${data.google_project.project.id}.internal"
+    openshift_node_1_fqdn = "${google_compute_instance.openshift_nodes.0.name}.${google_compute_instance.openshift_nodes.0.zone}.c.${data.google_project.project.id}.internal"
+    openshift_node_2_fqdn = "${google_compute_instance.openshift_nodes.1.name}.${google_compute_instance.openshift_nodes.1.zone}.c.${data.google_project.project.id}.internal"
 
     ansible_controller_internal_ip = "${google_compute_instance.ansible_controller.network_interface.0.network_ip}"
   }
