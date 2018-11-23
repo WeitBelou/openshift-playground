@@ -9,11 +9,11 @@ all:
   children:
     openshift:
       hosts:
-        openshift-master.internal:
+        ${openshift_master_fqdn}:
           ansible_host: ${openshift_master_internal_ip}
-        openshift-node-1.internal:
+        ${openshift_node_1_fqdn}:
           ansible_host: ${openshift_node_1_internal_ip}
-        openshift-node-2.internal:
+        ${openshift_node_2_fqdn}:
           ansible_host: ${openshift_node_2_internal_ip}
   vars:
     yum_repo_ip: ${ansible_controller_internal_ip}
