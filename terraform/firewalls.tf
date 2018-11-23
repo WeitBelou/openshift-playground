@@ -190,7 +190,7 @@ resource "google_compute_firewall" "openshift_master_to_node" {
 }
 
 resource "google_compute_firewall" "openshift_external_to_master" {
-  name    = "openshift-master-to-node"
+  name    = "openshift-external-to-master"
   network = "${google_compute_network.openshift.name}"
 
   # Required for node hosts to communicate to the master API, for node hosts to post back status, to receive tasks, and so on.
