@@ -6,8 +6,10 @@ resource "google_compute_instance" "ansible_controller" {
   allow_stopping_for_update = true
 
   metadata {
-    sshKeys = "openshift:${file("~/.ssh/id_rsa_openshift.pub")}"
+    sshKeys = "ansible_user:${file("~/.ssh/id_rsa_ansible_user.pub")}"
   }
+
+  metadata_startup_script = "sudo yum install ansible"
 
   boot_disk {
     initialize_params {
@@ -31,7 +33,7 @@ resource "google_compute_instance" "openshift_master" {
   machine_type = "${var.openshift_master_machine_type}"
 
   metadata {
-    sshKeys = "openshift:${file("~/.ssh/id_rsa_openshift.pub")}"
+    sshKeys = "ansible_user:${file("~/.ssh/id_rsa_ansible_user.pub")}"
   }
 
   boot_disk {
@@ -55,7 +57,7 @@ resource "google_compute_instance" "openshift_nodes" {
   name  = "openshift-node-${count.index + 1}"
 
   metadata {
-    sshKeys = "openshift:${file("~/.ssh/id_rsa_openshift.pub")}"
+    sshKeys = "ansible_user:${file("~/.ssh/id_rsa_ansible_user.pub")}"
   }
 
   machine_type = "${var.openshift_node_machine_type}"

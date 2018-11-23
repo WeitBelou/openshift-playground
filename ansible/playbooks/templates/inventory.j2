@@ -4,12 +4,12 @@
 openshift_deployment_type=openshift-enterprise
 
 # Use 'openshift' user instead of 'root'
-ansible_ssh_user=openshift
+ansible_ssh_user=ansible_user
 ansible_become=true
 
 # Set hostname for master
-openshift_master_cluster_hostname=openshift-master.internal
-openshift_master_cluster_public_hostname=openshift-master.internal
+openshift_master_cluster_hostname=${openshift_master_fqdn}
+openshift_master_cluster_public_hostname=${openshift_master_fqdn}
 
 # Use firewalld insted of iptables
 os_firewall_use_firewalld=true
@@ -20,7 +20,7 @@ openshift_docker_insecure_registries={{ docker_registry_ip }}:5000
 openshift_examples_modify_imagestreams=true
 
 # Specify image tag
-openshift_image_tag=v3.11.16
+openshift_image_tag=v3.11.43
 
 [OSEv3:children]
 masters
@@ -29,14 +29,14 @@ etcd
 
 # Specify master hosts
 [masters]
-openshift-master.internal
+${openshift_master_fqdn}
 
 # Specify etcd hosts
 [etcd]
-openshift-master.internal
+${openshift_master_fqdn}
 
 # Specify nodes groups
 [nodes]
-openshift-master.internal openshift_node_group_name='node-config-master'
-openshift-node-1.internal openshift_node_group_name='node-config-infra'
-openshift-node-2.internal openshift_node_group_name='node-config-compute'
+${openshift_master_fqdn} openshift_node_group_name='node-config-master'
+${openshift_node_1_fqdn} openshift_node_group_name='node-config-infra'
+${openshift_node_2_fqdn} openshift_node_group_name='node-config-compute'

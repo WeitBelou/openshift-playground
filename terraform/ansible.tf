@@ -26,13 +26,17 @@ resource "null_resource" "ansible_files" {
   connection {
     host = "${google_compute_instance.ansible_controller.network_interface.0.access_config.0.assigned_nat_ip}"
 
-    user        = "openshift"
-    private_key = "${file("~/.ssh/id_rsa_openshift")}"
+    user        = "ansible_user"
+    private_key = "${file("~/.ssh/id_rsa_ansible_user")}"
+  }
+
+  provisioner "local-exec" {
+    command = "ssh-copy-id ansible_user"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "rm -rf ~/ansible",
+      "[ -d ~/ansible ] || rm -rf ~/ansible",
     ]
   }
 
@@ -54,16 +58,5 @@ resource "null_resource" "ansible_files" {
   provisioner "file" {
     source      = "~/.vault_keys/openshift_playground"
     destination = "~/.vault_keys/openshift_playground"
-  }
-
-  provisioner "file" {
-    source      = "~/.ssh/id_rsa_openshift"
-    destination = "~/.ssh/id_rsa_openshift"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod 600 ~/.ssh/id_rsa_openshift",
-    ]
   }
 }
