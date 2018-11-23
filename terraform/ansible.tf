@@ -6,13 +6,13 @@ resource "template_dir" "ansible" {
 
   vars {
     openshift_master_internal_ip = "${google_compute_instance.openshift_master.network_interface.0.network_ip}"
-    openshift_master_fqdn        = "${google_compute_instance.openshift_master.name}.${google_compute_instance.openshift_master.zone}.${data.google_project.project.name}.internal"
+    openshift_master_fqdn        = "${google_compute_instance.openshift_master.name}.${google_compute_instance.openshift_master.zone}.${data.google_project.project.id}.internal"
 
     openshift_node_1_internal_ip = "${google_compute_instance.openshift_nodes.0.network_interface.0.network_ip}"
-    openshift_node_1_fqdn        = "$${google_compute_instance.openshift_nodes.0.name}.${google_compute_instance.openshift_nodes.0.zone}.${data.google_project.project.name}.internal"
+    openshift_node_1_fqdn        = "$${google_compute_instance.openshift_nodes.0.name}.${google_compute_instance.openshift_nodes.0.zone}.${data.google_project.project.id}.internal"
 
     openshift_node_2_internal_ip = "${google_compute_instance.openshift_nodes.1.network_interface.0.network_ip}"
-    openshift_node_2_fqdn        = "$${google_compute_instance.openshift_nodes.1.name}.${google_compute_instance.openshift_nodes.1.zone}.${data.google_project.project.name}.internal"
+    openshift_node_2_fqdn        = "$${google_compute_instance.openshift_nodes.1.name}.${google_compute_instance.openshift_nodes.1.zone}.${data.google_project.project.id}.internal"
 
     ansible_controller_internal_ip = "${google_compute_instance.ansible_controller.network_interface.0.network_ip}"
   }
@@ -30,8 +30,15 @@ resource "null_resource" "ansible_files" {
     private_key = "${file("~/.ssh/id_rsa_ansible_user")}"
   }
 
-  provisioner "local-exec" {
-    command = "ssh-copy-id ansible_user"
+  provisioner "file" {
+    source      = "~/.ssh/id_rsa_ansible_user"
+    destination = "~/.ssh/id_rsa_ansible_user"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod 600 ~/.ssh/id_rsa_ansible_user",
+    ]
   }
 
   provisioner "remote-exec" {
