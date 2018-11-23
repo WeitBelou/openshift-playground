@@ -20,7 +20,7 @@ openshift_docker_insecure_registries={{ docker_registry_ip }}:5000
 openshift_examples_modify_imagestreams=true
 
 # Specify image tag
-openshift_image_tag=v3.11.43
+openshift_image_tag={{ openshift_image_tag }}
 
 [OSEv3:children]
 masters
