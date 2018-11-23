@@ -9,7 +9,7 @@ resource "google_compute_instance" "ansible_controller" {
     sshKeys = "ansible_user:${file("~/.ssh/id_rsa_ansible_user.pub")}"
   }
 
-  metadata_startup_script = "sudo yum install ansible"
+  metadata_startup_script = "sudo yum -y install ansible"
 
   boot_disk {
     initialize_params {
