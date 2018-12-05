@@ -65,5 +65,5 @@
         baseurl: http://{{ yum_repo_ip }}/repos/{{ item }}
         gpgcheck: false
         enabled: true
-        file: ose
+        file: okd
       with_items: "{{ redhat_repos }}"

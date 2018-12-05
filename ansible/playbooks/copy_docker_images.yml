@@ -3,7 +3,8 @@
   become: true
 
   vars_files:
-    - ../credentials.yml
+    - "{{ inventory_dir }}/credentials.yml"
+    - "{{ inventory_dir }}/vars.yml"
 
   tasks:
     - name: Install required packages
@@ -41,6 +42,12 @@
         published_ports:
           - "5000:5000"
 
+    - name: Open firewall
+      firewalld:
+        port: 5000/tcp
+        permanent: true
+        state: enabled
+
     - name: Add insecure registries
       template:
         src: templates/etc/docker/daemon.json.j2
@@ -68,9 +75,3 @@
         push: true
       with_items: "{{ openshift_docker_images}}"
       when: item.major_tag | default(false)
-
-    - name: Open firewall
-      firewalld:
-        port: 5000/tcp
-        permanent: true
-        state: enabled

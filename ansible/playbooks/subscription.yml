@@ -4,7 +4,8 @@
   become: true
 
   vars_files:
-    - ../credentials.yml
+    - "{{ inventory_dir }}/credentials.yml"
+    - "{{ inventory_dir }}/vars.yml"
 
   tasks:
     - name: Install subscription-manager
@@ -17,16 +18,5 @@
         state: present
         username: "{{ redhat_username }}"
         password: "{{ redhat_password }}"
-        auto_attach: true
-
-    - name: Disable all RHSM repositories
-      rhsm_repository:
-        name: '*'
-        state: disabled
-
-    - name: Enable repos
-      rhsm_repository:
-        name: "{{ item }}"
-        state: enabled
-      with_items: "{{ redhat_repos }}"
+        auto_attach: false
 

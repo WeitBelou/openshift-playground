@@ -1,0 +1,165 @@
+yum_repo_ip: ${ansible_controller_internal_ip}
+docker_registry_ip: ${ansible_controller_internal_ip}
+dns_ip: ${ansible_controller_internal_ip}
+redhat_repos:
+  - rhel-7-server-rpms
+  - rhel-7-server-extras-rpms
+  - rhel-7-server-ansible-2.6-rpms
+openshift_image_tag: v3.11.43
+openshift_image_major_tag: v3.11
+openshift_docker_images:
+  - name: openshift3/apb-base
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/apb-tools
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/automation-broker-apb
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/csi-attacher
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/csi-driver-registrar
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/csi-livenessprobe
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/csi-provisioner
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/grafana
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/image-inspector
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/mariadb-apb
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/mediawiki
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/mediawiki-apb
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/mysql-apb
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-ansible
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-ansible-service-broker
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-cli
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-cluster-autoscaler
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-cluster-capacity
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-cluster-monitoring-operator
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-console
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-configmap-reloader
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-control-plane
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-deployer
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-descheduler
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-docker-builder
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-docker-registry
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-efs-provisioner
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-egress-dns-proxy
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-egress-http-proxy
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-egress-router
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-haproxy-router
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-hyperkube
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-hypershift
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-keepalived-ipfailover
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-kube-rbac-proxy
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-kube-state-metrics
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-metrics-server
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-node
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-node-problem-detector
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-operator-lifecycle-manager
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-pod
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-prometheus-config-reloader
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-prometheus-operator
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-recycler
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-service-catalog
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-template-service-broker
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/ose-web-console
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/postgresql-apb
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/registry-console
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/snapshot-controller
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: openshift3/snapshot-provisioner
+    tag: "{{ openshift_image_tag }}"
+    major_tag: "{{ openshift_image_major_tag }}"
+  - name: rhel7/etcd
+    tag: 3.2.22
